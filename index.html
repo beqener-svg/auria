@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Untuk Putri ❤️</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,400&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: #b8d8f5;
+            overflow: hidden;
+            min-height: 100vh;
+            perspective: 1000px;
+        }
+
+        /* Animasi Transisi Halaman Smooth */
+        .page {
+            display: none;
+            min-height: 100vh;
+            padding: 20px;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .page.active {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        h1 {
+            color: #ff8db5;
+            margin-bottom: 10px;
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+        }
+
+        h2 {
+            color: #b35b8e;
+            font-weight: 400;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        /* PIN & Keypad */
+        .pin-box {
+            width: 260px;
+            height: 60px;
+            background: white;
+            border-radius: 30px;
+            margin: 20px;
+            font-size: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,.1);
+            letter-spacing: 5px;
+            font-weight: bold;
+            color: #b35b8e;
+        }
+
+        .keypad {
+            display: grid;
+            grid-template-columns: repeat(3, 85px);
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .btn {
+            width: 85px;
+            height: 85px;
+            border: none;
+            border-radius: 50%;
+            font-size: 32px;
+            font-weight: 600;
+            background: white;
+            color: #7db2e8;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: all 0.2s;
+        }
+
+        .btn:active {
+            transform: scale(0.9);
+            background: #ffb4cf;
+            color: white;
+        }
+
+        /* Efek Ketik (Typing effect) */
+        .typing-effect {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            border-right: 3px solid #ff8db5;
+            white-space: normal;
+            overflow: hidden;
+            display: inline-block;
+            animation: blink 0.75s step-end infinite;
+        }
+
+        @keyframes blink {
+            from, to { border-color: transparent }
+            50% { border-color: #ff8db5; }
+        }
+
+        /* Elemen Halaman */
+        .memory-img {
+            width: 280px;
+            border-radius: 20px;
+            margin: 20px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,.15);
+            animation: float 4s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .date, .counter-box {
+            background: #ffb4cf;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+            box-shadow: 0 5px 15px rgba(255, 141, 181, 0.4);
+        }
+
+        .counter-box {
+            background: #7db2e8;
+            margin-top: 15px;
+            font-size: 18px;
+            box-shadow: 0 5px 15px rgba(125, 178, 232, 0.4);
+        }
+
+        /* Game Tebak Hati */
+        .game-container {
+            display: flex;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .box-gift {
+            width: 80px;
+            height: 80px;
+            background: white;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 35px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .box-gift:hover { transform: scale(1.1); }
+
+        /* Polling Slider */
+        .slider-ui {
+            width: 300px;
+            margin: 30px 0;
+        }
+
+        .slider-ui input {
+            width: 100%;
+            accent-color: #ff8db5;
+        }
+
+        .love-percent {
+            font-size: 40px;
+            font-weight: bold;
+            color: #b35b8e;
+            margin-top: 10px;
+        }
+
+        /* Kanvas Pohon Bunga */
+        #flowerCanvas {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            margin: 15px 0;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+        }
+
+        /* Animasi Amplop Surat */
+        .envelope-wrapper {
+            margin: 40px 0;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .envelope {
+            width: 150px;
+            height: 100px;
+            background: #f2e2c8;
+            position: relative;
+            border-radius: 0 0 10px 10px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .envelope::before {
+            content: '';
+            position: absolute;
+            top: -50px; left: 0;
+            border-left: 75px solid transparent;
+            border-right: 75px solid transparent;
+            border-bottom: 50px solid #e6d3b5;
+            transition: transform 0.5s;
+            transform-origin: bottom;
+        }
+
+        .envelope.open::before {
+            transform: rotateX(180deg) translateY(10px);
+            z-index: 1;
+        }
+
+        .letter-content {
+            background: #fffdf9;
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 450px;
+            line-height: 1.8;
+            box-shadow: 0 10px 30px rgba(0,0,0,.1);
+            text-align: left;
+            color: #555;
+            display: none;
+        }
+
+        /* Tombol Next & Pilihan */
+        .next {
+            margin-top: 25px;
+            padding: 12px 35px;
+            border: none;
+            border-radius: 30px;
+            background: #ff8db5;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255,141,185,0.4);
+            transition: background 0.3s;
+        }
+
+        .next:hover { background: #ff6ca8; }
+
+        .btn-container {
+            display: flex; gap: 20px; margin-top: 30px; position: relative; width: 320px; height: 80px; justify-content: center;
+        }
+
+        .yes, .no {
+            width: 140px; height: 65px; border: none; border-radius: 15px; font-size: 20px; font-weight: bold; cursor: pointer;
+        }
+        .yes { background: #34c759; color: white; box-shadow: 0 5px 15px rgba(52,199,89,0.4); }
+        .no { background: #ff3b30; color: white; position: absolute; transition: all 0.1s ease; }
+
+        /* Gaya Khusus untuk Elemen Hujan (Hati & Foto) */
+        .falling-item {
+            position: fixed;
+            top: -100px;
+            pointer-events: none;
+            z-index: 999;
+            animation: fall linear forwards;
+        }
+
+        .falling-photo {
+            border: 4px solid white;
+            border-bottom: 12px solid white; /* Efek polaroid */
+            border-radius: 4px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            object-fit: cover;
+        }
+
+        @keyframes fall {
+            to { transform: translateY(115vh) rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="music" loop>
+        <source src="lagu.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="page active" id="page1">
+        <h1 id="pinTitle">Halo Putri ❤️</h1>
+        <h2 id="pinSub">Masukkan Tanggal Lahir Kamu</h2>
+        <div class="pin-box" id="display"></div>
+        <div class="keypad">
+            <button class="btn" onclick="addNum(1)">1</button>
+            <button class="btn" onclick="addNum(2)">2</button>
+            <button class="btn" onclick="addNum(3)">3</button>
+            <button class="btn" onclick="addNum(4)">4</button>
+            <button class="btn" onclick="addNum(5)">5</button>
+            <button class="btn" onclick="addNum(6)">6</button>
+            <button class="btn" onclick="addNum(7)">7</button>
+            <button class="btn" onclick="addNum(8)">8</button>
+            <button class="btn" onclick="addNum(9)">9</button>
+            <button class="btn" style="font-size:20px; color:red;" onclick="clearPin()">Clear</button>
+            <button class="btn" onclick="addNum(0)">0</button>
+            <div></div>
+        </div>
+    </div>
+
+    <div class="page" id="page2">
+        <img src="foto1.jpg" class="memory-img" alt="Memory">
+        <div class="date">3 Mei 2026</div>
+        <div class="counter-box" id="dayCounter">Menghitung hari...</div>
+        <p class="quote" style="color: #444; margin-top: 15px;">
+            <span id="type1" class="typing-effect"></span>
+        </p>
+        <button class="next" id="btnNext2" style="display:none;" onclick="openPage(3)">Lanjut ✨</button>
+    </div>
+
+    <div class="page" id="page3">
+        <h1>Mini Game Untukmu 🎁</h1>
+        <h2>Cari cinta sejatiku di salah satu kotak di bawah ini!</h2>
+        <div class="game-container">
+            <div class="box-gift" onclick="playGame(this, false)">📦</div>
+            <div class="box-gift" onclick="playGame(this, true)">📦</div>
+            <div class="box-gift" onclick="playGame(this, false)">📦</div>
+        </div>
+        <h2 id="gameFeedback" style="font-weight: bold;"></h2>
+        <button class="next" id="btnNext3" style="display:none;" onclick="openPage(4)">Lanjut Game Lagi Kelar? 🚀</button>
+    </div>
+
+    <div class="page" id="page4">
+        <h1>Seberapa sayang sih kamu? 🤔</h1>
+        <h2>Geser slider di bawah ini sampai mentok!</h2>
+        <div class="slider-ui">
+            <input type="range" min="0" max="100" value="10" id="loveSlider" oninput="updateLove(this.value)">
+            <div class="love-percent" id="loveVal">10%</div>
+        </div>
+        <button class="next" id="btnNext4" style="display:none;" onclick="startFlowerGrow()">Lanjut ❤️</button>
+    </div>
+
+    <div class="page" id="page5">
+        <h1>Bunga ini tumbuh subur...</h1>
+        <h2>Sama seperti perasaanku ke kamu yang terus bercabang tiada henti.</h2>
+        <canvas id="flowerCanvas" width="320" height="300"></canvas>
+        <button class="next" id="btnNext5" style="display:none;" onclick="openPage(6)">Buka Surat Dari Aku ✉️</button>
+    </div>
+
+    <div class="page" id="page6">
+        <h1 id="suratHeader">Ada surat nih...</h1>
+        <h2 id="suratSub">Klik amplopnya buat buka ya</h2>
+        
+        <div class="envelope-wrapper" id="envelopeWrap" onclick="unpackLetter()">
+            <div class="envelope" id="mailBox"></div>
+        </div>
+
+        <div class="letter-content" id="mainLetter">
+            <h2 style="font-family:'Playfair Display'; font-weight:bold; font-size: 24px;">Dear Putri,</h2>
+            <br>
+            Terima kasih banyak sudah sudi hadir dan mengisi hari-hari di dalam hidupku. <br><br> Aku sadar, aku tidak tahu bagaimana misteri masa depan akan berjalan nantinya. Tapi aku memegang satu janji pasti: <br><br>
+            <strong>Aku selalu ingin melihat senyum bahagiamu terpancar setiap hari.</strong>
+            <br><br>
+            Berada di dekatmu rasanya teduh sekali. Bersamamu terasa seperti pulang ke rumah. Dan jika suatu hari takdir memutar waktu kembali, aku akan tetap lantang memilih kamu lagi.
+            <br><br>
+            <center>❤️</center>
+            <center><button class="next" onclick="openPage(7)">Terakhir... ❤️</button></center>
+        </div>
+    </div>
+
+    <div class="page" id="page7">
+        <div class="question" style="font-size: 22px;">
+            Maukah kamu menjadi bagian dari hidupku yang akan selalu aku perjuangkan sampai kapanpun?
+        </div>
+        <div class="btn-container">
+            <button class="yes" onclick="kirimPesanWhatsApp()">Mau Banget!</button>
+            <button class="no" id="gamau">Gamau</button>
+        </div>
+    </div>
+
+    <script>
+        let pin = "";
+        let pinStage = 1; 
+        const displayEl = document.getElementById("display");
+        const music = document.getElementById("music");
+
+        // ⚠️ ATUR DAFTAR FOTO UNTUK HUJAN FOTO DI SINI ⚠️
+        // Ganti nama-nama file di bawah ini sesuai nama foto asli yang kamu miliki di folder
+        const daftarFotoHujan = [
+            "hujan1.jpg",
+            "hujan2.jpg",
+            "hujan3.jpg",
+            "hujan4.jpg"
+        ];
+
+        // Perhitungan Hari sejak 3 Mei 2026
+        function initCounter() {
+            const targetDate = new Date("2026-05-03");
+            const today = new Date();
+            const timeDiff = today - targetDate;
+            const daysDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+            
+            const counterEl = document.getElementById("dayCounter");
+            if (daysDiff >= 0) {
+                counterEl.innerHTML = `Kita sudah berjalan ${daysDiff} Hari ❤️`;
+            } else {
+                counterEl.innerHTML = `${Math.abs(daysDiff)} Hari menuju 3 Mei 2026 ✨`;
+            }
+        }
+        initCounter();
+
+        // Sistem PIN
+        function addNum(num) {
+            if (pin.length < 6) {
+                pin += num;
+                displayEl.innerHTML = pin;
+            }
+
+            if (pin.length === 6) {
+                if (pinStage === 1) {
+                    if (pin === "010908" || pin === "010809") {
+                        setTimeout(() => {
+                            alert("Salahh 😝 Wkwkwk kena tipu ya!");
+                            document.getElementById("pinTitle").innerHTML = "Eits, Salah! 🤪";
+                            document.getElementById("pinSub").innerHTML = "Sandi diganti! Masukkan tanggal jadi kita (DDMMYY):";
+                            pinStage = 2;
+                            clearPin();
+                        }, 200);
+                    } else {
+                        setTimeout(() => { alert("Kombinasi salah! Hubungi pembuat kodenya 😜"); clearPin(); }, 200);
+                    }
+                } else if (pinStage === 2) {
+                    if (pin === "030526") {
+                        music.play().catch(e => console.log("Audio play blocked"));
+                        openPage(2);
+                        startTyping("type1", "The moment you came into my life and I chose you, my heart made its final decision.", () => {
+                            document.getElementById("btnNext2").style.display = "inline-block";
+                        });
+                    } else {
+                        setTimeout(() => { alert("Sandi tanggal jadian masa lupa? Semangat ingat-ingat lagi! 😂"); clearPin(); }, 200);
+                    }
+                }
+            }
+        }
+
+        function clearPin() { pin = ""; displayEl.innerHTML = ""; }
+
+        function openPage(num) {
+            document.querySelectorAll(".page").forEach(p => {
+                p.classList.remove("active");
+                p.style.opacity = 0;
+            });
+            const nextPage = document.getElementById("page" + num);
+            nextPage.classList.add("active");
+            setTimeout(() => { nextPage.style.opacity = 1; }, 50);
+        }
+
+        // Efek Mengetik
+        function startTyping(elementId, text, callback) {
+            let i = 0;
+            const el = document.getElementById(elementId);
+            el.innerHTML = "";
+            function type() {
+                if (i < text.length) {
+                    el.innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(type, 50);
+                } else {
+                    el.style.borderRight = "none";
+                    if(callback) callback();
+                }
+            }
+            type();
+        }
+
+        // Mini Game Kotak
+        function playGame(element, isTrue) {
+            if(isTrue) {
+                element.innerHTML = "❤️";
+                document.getElementById("gameFeedback").innerHTML = "Yey bener! Kamu nemu cintaku! 😍";
+                document.getElementById("gameFeedback").style.color = "#34c759";
+                document.getElementById("btnNext3").style.display = "inline-block";
+            } else {
+                element.innerHTML = "❌";
+                document.getElementById("gameFeedback").innerHTML = "Zonk! Coba kotak yang lain dong.. 😜";
+                document.getElementById("gameFeedback").style.color = "red";
+            }
+        }
+
+        // Polling Cinta
+        function updateLove(val) {
+            document.getElementById("loveVal").innerHTML = val + "%";
+            if(val >= 95) {
+                document.getElementById("loveVal").innerHTML = "1000000% ❤️";
+                document.getElementById("btnNext4").style.display = "inline-block";
+            }
+        }
+
+        // Animasi Tumbuh Bunga Bercabang (Canvas)
+        function startFlowerGrow() {
+            openPage(5);
+            const canvas = document.getElementById("flowerCanvas");
+            const ctx = canvas.getContext("2d");
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+            
+            function drawBranch(startX, startY, len, angle, branchWidth) {
+                ctx.beginPath();
+                ctx.save();
+                ctx.strokeStyle = "#8B5A2B";
+                ctx.fillStyle = "#ffb4cf";
+                ctx.lineWidth = branchWidth;
+                ctx.translate(startX, startY);
+                ctx.rotate(angle * Math.PI/180);
+                ctx.moveTo(0, 0);
+                ctx.lineTo(0, -len);
+                ctx.stroke();
+
+                if (len < 10) {
+                    ctx.beginPath();
+                    ctx.arc(0, -len, 6, 0, Math.PI*2);
+                    ctx.fill();
+                    ctx.restore();
+                    return;
+                }
+
+                setTimeout(() => {
+                    drawBranch(0, -len, len*0.75, angle - 20, branchWidth*0.7);
+                    drawBranch(0, -len, len*0.75, angle + 20, branchWidth*0.7);
+                }, 150);
+
+                ctx.restore();
+            }
+            setTimeout(() => { drawBranch(160, 290, 60, 0, 6); }, 500);
+            setTimeout(() => { document.getElementById("btnNext5").style.display = "inline-block"; }, 3500);
+        }
+
+        // Buka surat
+        function unpackLetter() {
+            const envelope = document.getElementById("mailBox");
+            envelope.classList.add("open");
+            
+            setTimeout(() => {
+                document.getElementById("envelopeWrap").style.display = "none";
+                document.getElementById("suratHeader").style.display = "none";
+                document.getElementById("suratSub").style.display = "none";
+                const letter = document.getElementById("mainLetter");
+                letter.style.display = "block";
+            }, 800);
+        }
+
+        // Tombol Gamau Kabur
+        const noBtn = document.getElementById("gamau");
+        function moveButton() {
+            const x = Math.random() * (window.innerWidth - 150);
+            const y = Math.random() * (window.innerHeight - 80);
+            noBtn.style.left = x + "px";
+            noBtn.style.top = y + "px";
+        }
+        noBtn.addEventListener("mouseover", moveButton);
+        noBtn.addEventListener("touchstart", (e) => { e.preventDefault(); moveButton(); });
+
+        // ⚠️ FUNGSI DIRECT WHATSAPP API ⚠️
+        function kirimPesanWhatsApp() {
+            // GANTI nomor di bawah ini dengan nomor WA milikmu (Awali dengan kode negara 62, jangan pakai angka 0)
+            const nomorTarget = "6281234567890"; 
+            
+            // Isi teks pesan yang akan otomatis tertulis di WA Putri
+            const teksPesan = "Mau Banget lah sayang! Aku mau terus berjuang bareng kamu selamanya.. ❤️🌹 Terima kasih ya buat web indahnya! 🥰";
+            
+            // Proses encoding text agar terbaca rapi oleh link browser
+            const linkWA = `https://api.whatsapp.com/send?phone=${nomorTarget}&text=${encodeURIComponent(teksPesan)}`;
+            
+            alert("Yeaaay! Jawaban kamu langsung dikirim ke WhatsApp aku ya! ❤️");
+            window.location.href = linkWA;
+        }
+
+        // Sistem Hujan Campuran (Foto Asli & Hati)
+        function createFallingRain() {
+            const container = document.createElement("div");
+            container.classList.add("falling-item");
+            
+            // Peluang: 60% Hati murni, 40% Foto Polaroid Asli
+            if(Math.random() > 0.4) {
+                container.innerHTML = "❤️";
+                container.style.fontSize = (Math.random() * 20 + 15) + "px";
+            } else {
+                // Membuat tag gambar foto polaroid mini
+                const img = document.createElement("img");
+                
+                // Mengambil foto acak dari daftar yang sudah kita buat di atas
+                const fotoAcak = daftarFotoHujan[Math.floor(Math.random() * daftarFotoHujan.length)];
+                img.src = fotoAcak;
+                
+                img.classList.add("falling-photo");
+                img.style.width = (Math.random() * 30 + 50) + "px";  // Lebar foto acak (50px - 80px)
+                img.style.height = img.style.width; // Kotak simetris
+                
+                container.appendChild(img);
+            }
+
+            container.style.left = Math.random() * 100 + "vw";
+            container.style.animationDuration = (Math.random() * 4 + 4) + "s"; // Kecepatan jatuh (4-8 detik)
+            document.body.appendChild(container);
+
+            setTimeout(() => { container.remove(); }, 8000);
+        }
+        setInterval(createFallingRain, 300);
+    </script>
+</body>
+</html>
